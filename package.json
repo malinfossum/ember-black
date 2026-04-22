@@ -30,6 +30,10 @@
 		"type": "git",
 		"url": "https://github.com/malinfossum/ember-black.git"
 	},
+	"homepage": "https://github.com/malinfossum/ember-black#readme",
+	"bugs": {
+		"url": "https://github.com/malinfossum/ember-black/issues"
+	},
 	"contributes": {
 		"themes": [
 			{

@@ -21,7 +21,7 @@ An OLED-first VS Code theme built on true black with warm, Claude-inspired accen
 
 ## Recommended setting
 
-Add this to your `settings.json` so the custom parenthesis color applies:
+Add this to your `settings.json` so the custom bracket colors apply:
 
 ```json
 "editor.bracketPairColorization.enabled": false
