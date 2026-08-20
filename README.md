@@ -49,7 +49,7 @@ npm run build
 Edit `themes/ember-black-color-theme.json`, re-run the build, and commit both theme files.
 Never hand-edit `themes/ember-ash-color-theme.json` — it is overwritten.
 
-`icon.png` is hand-made artwork, not generated. Nothing in the build touches it.
+`icon.png` is artwork, not a build output. Nothing in the build touches it.
 
 ## License
 
