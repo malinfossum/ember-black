@@ -1,8 +1,8 @@
 {
 	"name": "ember-black",
 	"displayName": "Ember Black",
-	"description": "OLED-first VS Code theme with Claude-inspired warm accents and a saturated syntax palette.",
-	"version": "1.4.0",
+	"description": "OLED-first VS Code theme with Claude-inspired warm accents and a saturated syntax palette. Ships in true black and warm dark.",
+	"version": "1.5.0",
 	"publisher": "malinfossum",
 	"license": "MIT",
 	"author": {
@@ -34,12 +34,22 @@
 	"bugs": {
 		"url": "https://github.com/malinfossum/ember-black/issues"
 	},
+	"scripts": {
+		"build:ash": "node tools/build-ash.mjs",
+		"build:icon": "node tools/build-icon.mjs",
+		"build": "npm run build:ash && npm run build:icon"
+	},
 	"contributes": {
 		"themes": [
 			{
 				"label": "Ember Black",
 				"uiTheme": "vs-dark",
 				"path": "./themes/ember-black-color-theme.json"
+			},
+			{
+				"label": "Ember Ash",
+				"uiTheme": "vs-dark",
+				"path": "./themes/ember-ash-color-theme.json"
 			}
 		]
 	}
