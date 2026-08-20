@@ -4,3 +4,5 @@
 node_modules/**
 preview/**
 *.vsix
+tools/**
+icon.svg

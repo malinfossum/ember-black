@@ -5,7 +5,7 @@
 - Add **Ember Ash**, a warm dark sibling for non-OLED screens — same syntax palette, canvas raised from `#000000` to `#1f1e1d` with the greys warmed to match
 - Derive Ember Ash from Ember Black at build time (`npm run build:ash`) so the two themes cannot drift; Ember Black stays the single source of truth
 - Lift the deliberately dim tokens (comments, delimiters, bracket greys) on the Ash canvas so they hold the contrast they had on true black
-- Redraw the extension icon
+- Redraw the extension icon as a flame with a hot core, legible down to 16px
 
 ## 1.4.0 — 2026-04-21
 

@@ -3,11 +3,11 @@
  *
  * The VSIX manifest only accepts PNG, but hand-exported PNGs drift from the
  * vector they came from. This renders the same geometry the SVG describes —
- * rounded rectangles and one radial gradient — with 4x supersampling for the
- * edges, and writes the PNG with nothing but node:zlib.
+ * rounded rectangles and filled bezier paths — with supersampled edges, and
+ * writes the PNG with nothing but node:zlib.
  *
- * Keep the shape table below in sync with icon.svg. The SVG stays the artwork
- * you edit and preview; this is the export step.
+ * The path `d` strings below are copied verbatim from icon.svg. Keep them in
+ * sync: the SVG is the artwork you edit and preview, this is the export step.
  *
  * Run: npm run build:icon
  */
@@ -23,42 +23,103 @@ const TARGET = join(root, "icon.png");
 const SIZE = 256;
 const SAMPLES = 4; // per axis
 const CANVAS = "#000000";
-const INK = "#f2f0ec";
-const EMBER = "#d97757";
+const FLAME = "#d97757";
+const CORE = "#e6d260";
 
-/**
- * Rounded rectangles, painted in order. Mirrors icon.svg.
- *
- * The ember arm is painted *before* the spine so the spine covers its left cap.
- * Drawn the other way round, the round cap bites a notch out of the spine; this
- * way the accent reads as growing out of the letterform.
- */
+/** Outer flame silhouette: leaning tip, concave shoulder on the left. */
+const FLAME_PATH =
+	"M 150 30 C 137 76 191 112 191 155 C 191 193 163 219 128 219 " +
+	"C 93 219 65 193 65 155 C 65 111 130 84 150 30 Z";
+
+/** Inner core, sitting low in the flame where it burns hottest. */
+const CORE_PATH =
+	"M 137 122 C 132 148 153 163 153 180 C 153 197 142 209 128 209 " +
+	"C 114 209 103 197 103 180 C 103 158 128 147 137 122 Z";
+
+/** Painted in order. Mirrors icon.svg. */
 const SHAPES = [
-	{ x: 0, y: 0, w: 256, h: 256, r: 58, fill: CANVAS }, // tile
-	{ x: 56, y: 115, w: 102, h: 26, r: 13, fill: EMBER }, // the ember
-	{ x: 56, y: 56, w: 26, h: 144, r: 13, fill: INK }, // spine
-	{ x: 56, y: 56, w: 144, h: 26, r: 13, fill: INK }, // top arm
-	{ x: 56, y: 174, w: 144, h: 26, r: 13, fill: INK }, // bottom arm
+	{ kind: "rect", x: 0, y: 0, w: 256, h: 256, r: 58, fill: CANVAS },
+	{ kind: "path", d: FLAME_PATH, fill: FLAME },
+	{ kind: "path", d: CORE_PATH, fill: CORE },
 ];
 
-/** Radial ember glow, clipped to the tile, painted between tile and letterform. */
+/** Radial ember glow, clipped to the tile, painted between tile and flame. */
 const GLOW = {
 	cx: 128,
-	cy: 133,
-	radius: 133,
-	color: EMBER,
+	cy: 140,
+	radius: 136,
+	color: FLAME,
 	stops: [
-		[0, 0.22],
-		[0.55, 0.07],
+		[0, 0.24],
+		[0.55, 0.08],
 		[1, 0],
 	],
 };
 
 // ---------------------------------------------------------------------------
-// geometry
+// paths
 // ---------------------------------------------------------------------------
 
-const rgb = (hex) => [1, 3, 5].map((i) => Number.parseInt(hex.substr(i, 2), 16));
+const FLATTEN_STEPS = 24;
+
+/**
+ * Flattens an absolute M/C/Z path into a polygon.
+ * Only the commands icon.svg actually uses are supported — this is an export
+ * step for known artwork, not a general SVG engine.
+ */
+function flatten(d) {
+	const tokens = d.trim().split(/[\s,]+/);
+	const points = [];
+	let cursor = [0, 0];
+	let i = 0;
+
+	const number = () => Number.parseFloat(tokens[i++]);
+
+	while (i < tokens.length) {
+		const command = tokens[i++];
+		if (command === "M") {
+			cursor = [number(), number()];
+			points.push(cursor);
+		} else if (command === "C") {
+			const p1 = [number(), number()];
+			const p2 = [number(), number()];
+			const p3 = [number(), number()];
+			const p0 = cursor;
+			for (let s = 1; s <= FLATTEN_STEPS; s += 1) {
+				const t = s / FLATTEN_STEPS;
+				const u = 1 - t;
+				points.push([
+					u * u * u * p0[0] + 3 * u * u * t * p1[0] + 3 * u * t * t * p2[0] + t * t * t * p3[0],
+					u * u * u * p0[1] + 3 * u * u * t * p1[1] + 3 * u * t * t * p2[1] + t * t * t * p3[1],
+				]);
+			}
+			cursor = p3;
+		} else if (command === "Z" || command === "z") {
+			break;
+		} else {
+			throw new Error(`unsupported path command: ${command}`);
+		}
+	}
+	return points;
+}
+
+function boundsOf(points) {
+	const xs = points.map((p) => p[0]);
+	const ys = points.map((p) => p[1]);
+	return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+}
+
+/** Crossing-number test. */
+function inPolygon(px, py, points, bounds) {
+	if (px < bounds[0] || py < bounds[1] || px > bounds[2] || py > bounds[3]) return false;
+	let inside = false;
+	for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+		const [xi, yi] = points[i];
+		const [xj, yj] = points[j];
+		if (yi > py !== yj > py && px < ((xj - xi) * (py - yi)) / (yj - yi) + xi) inside = !inside;
+	}
+	return inside;
+}
 
 function inRoundedRect(px, py, { x, y, w, h, r }) {
 	if (px < x || py < y || px > x + w || py > y + h) return false;
@@ -66,6 +127,25 @@ function inRoundedRect(px, py, { x, y, w, h, r }) {
 	const dy = Math.max(y + r - py, 0, py - (y + h - r));
 	return dx * dx + dy * dy <= r * r;
 }
+
+// prepare geometry once
+for (const shape of SHAPES) {
+	if (shape.kind === "path") {
+		shape.points = flatten(shape.d);
+		shape.bounds = boundsOf(shape.points);
+	}
+}
+
+const covers = (px, py, shape) =>
+	shape.kind === "rect"
+		? inRoundedRect(px, py, shape)
+		: inPolygon(px, py, shape.points, shape.bounds);
+
+// ---------------------------------------------------------------------------
+// render
+// ---------------------------------------------------------------------------
+
+const rgb = (hex) => [1, 3, 5].map((i) => Number.parseInt(hex.substr(i, 2), 16));
 
 function glowAlpha(px, py) {
 	const t = Math.hypot(px - GLOW.cx, py - GLOW.cy) / GLOW.radius;
@@ -79,12 +159,9 @@ function glowAlpha(px, py) {
 	return 0;
 }
 
-// ---------------------------------------------------------------------------
-// render
-// ---------------------------------------------------------------------------
-
 const tile = SHAPES[0];
 const glowColor = rgb(GLOW.color);
+const fills = SHAPES.map((s) => rgb(s.fill));
 const pixels = Buffer.alloc(SIZE * SIZE * 4);
 
 for (let y = 0; y < SIZE; y += 1) {
@@ -99,21 +176,17 @@ for (let y = 0; y < SIZE; y += 1) {
 				const px = x + (sx + 0.5) / SAMPLES;
 				const py = y + (sy + 0.5) / SAMPLES;
 
-				// start transparent, then composite source-over
 				let sr = 0;
 				let sg = 0;
 				let sb = 0;
 				let sa = 0;
 
-				for (const shape of SHAPES) {
-					if (!inRoundedRect(px, py, shape)) continue;
-					const [cr, cg, cb] = rgb(shape.fill);
-					sr = cr;
-					sg = cg;
-					sb = cb;
+				SHAPES.forEach((shape, index) => {
+					if (!covers(px, py, shape)) return;
+					[sr, sg, sb] = fills[index];
 					sa = 1;
 
-					// the glow sits directly on the tile, under the letterform
+					// the glow sits directly on the tile, under the flame
 					if (shape === tile) {
 						const ga = glowAlpha(px, py);
 						if (ga > 0) {
@@ -122,7 +195,7 @@ for (let y = 0; y < SIZE; y += 1) {
 							sb = sb * (1 - ga) + glowColor[2] * ga;
 						}
 					}
-				}
+				});
 
 				r += sr * sa;
 				g += sg * sa;
@@ -131,13 +204,12 @@ for (let y = 0; y < SIZE; y += 1) {
 			}
 		}
 
-		const total = SAMPLES * SAMPLES;
-		const alpha = a / total;
+		const alpha = a / (SAMPLES * SAMPLES);
 		const i = (y * SIZE + x) * 4;
 		// un-premultiply so partially covered edge pixels keep their colour
-		pixels[i] = alpha > 0 ? Math.round(r / a) : 0;
-		pixels[i + 1] = alpha > 0 ? Math.round(g / a) : 0;
-		pixels[i + 2] = alpha > 0 ? Math.round(b / a) : 0;
+		pixels[i] = a > 0 ? Math.round(r / a) : 0;
+		pixels[i + 1] = a > 0 ? Math.round(g / a) : 0;
+		pixels[i + 2] = a > 0 ? Math.round(b / a) : 0;
 		pixels[i + 3] = Math.round(alpha * 255);
 	}
 }
@@ -176,7 +248,6 @@ ihdr.writeUInt32BE(SIZE, 0);
 ihdr.writeUInt32BE(SIZE, 4);
 ihdr[8] = 8; // bit depth
 ihdr[9] = 6; // truecolour with alpha
-// 10..12 stay zero: deflate, adaptive filtering, no interlace
 
 const raw = Buffer.alloc(SIZE * (SIZE * 4 + 1));
 for (let y = 0; y < SIZE; y += 1) {
