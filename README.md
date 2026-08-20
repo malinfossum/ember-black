@@ -40,7 +40,7 @@ Add this to your `settings.json` so the custom bracket colors apply:
 
 ## Development
 
-Ember Black is the source of truth. Ember Ash and the icon are generated from it:
+Ember Black is the source of truth. Ember Ash is generated from it:
 
 ```
 npm run build
@@ -49,8 +49,7 @@ npm run build
 Edit `themes/ember-black-color-theme.json`, re-run the build, and commit both theme files.
 Never hand-edit `themes/ember-ash-color-theme.json` — it is overwritten.
 
-`icon.svg` is the artwork; `npm run build:icon` rasterises it to the `icon.png` the
-manifest needs. Edit the SVG and keep the shape table in `tools/build-icon.mjs` in sync.
+`icon.png` is hand-made artwork, not generated. Nothing in the build touches it.
 
 ## License
 

@@ -35,9 +35,7 @@
 		"url": "https://github.com/malinfossum/ember-black/issues"
 	},
 	"scripts": {
-		"build:ash": "node tools/build-ash.mjs",
-		"build:icon": "node tools/build-icon.mjs",
-		"build": "npm run build:ash && npm run build:icon"
+		"build": "node tools/build-ash.mjs"
 	},
 	"contributes": {
 		"themes": [
