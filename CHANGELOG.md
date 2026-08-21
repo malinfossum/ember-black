@@ -1,10 +1,12 @@
 # Changelog
 
-## 1.5.0 — 2026-08-20
+## 1.5.0 — 2026-08-21
 
-- Add **Ember Ash**, a warm dark sibling for non-OLED screens — same syntax palette, canvas raised from `#000000` to `#1f1e1d` with the greys warmed to match
-- Derive Ember Ash from Ember Black at build time (`npm run build`) so the two themes cannot drift; Ember Black stays the single source of truth
-- Lift the deliberately dim tokens (comments, delimiters, bracket greys) on the Ash canvas so they hold the contrast they had on true black
+- Add **Ember Ink** (`#151616`) and **Ember Slate** (`#1c1d1e`), two cool dark siblings for when true black is too stark for a long session — same syntax palette, canvas lifted off black with a blue-grey cast on the greys
+- Derive both from Ember Black at build time (`npm run build`) so the three themes cannot drift; Ember Black stays the single source of truth
+- Derive the neutral ramp from contrast ratios instead of a hand-authored map: every grey is re-found on the new canvas at the ratio it held against black, so a lifted canvas costs no crispness
+- Lift the tinted surfaces (selection, error, warning, info) and the deliberately dim tokens (comments, delimiters, bracket greys) so they hold their separation on a lifted canvas
+- Drop the chrome *below* the editor in Ink and Slate — sidebar, status bar, tabs, and title bar sit darker than the code rather than framing it
 - New extension icon — interlocking ember and ash forms around a lit core
 
 ## 1.4.0 — 2026-04-21
