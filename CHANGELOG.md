@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.0 — 2026-08-21
+
+- Add **Ember Ink** (`#151616`) and **Ember Slate** (`#1c1d1e`), two cool dark siblings for when true black is too stark for a long session — same syntax palette, canvas lifted off black with a blue-grey cast on the greys
+- Derive both from Ember Black at build time (`npm run build`) so the three themes cannot drift; Ember Black stays the single source of truth
+- Derive the neutral ramp from contrast ratios instead of a hand-authored map: every grey is re-found on the new canvas at the ratio it held against black, so a lifted canvas costs no crispness
+- Lift the tinted surfaces (selection, error, warning, info) and the deliberately dim tokens (comments, delimiters, bracket greys) so they hold their separation on a lifted canvas
+- Drop the chrome *below* the editor in Ink and Slate — sidebar, status bar, tabs, and title bar sit darker than the code rather than framing it
+- New extension icon — interlocking ember and teal forms around a lit gold core
+
 ## 1.4.0 — 2026-04-21
 
 - Move curly braces `{}` to teal `#3fc9a7` so the three bracket families are now distinct: `()` orange, `{}` teal, `[]` gold
