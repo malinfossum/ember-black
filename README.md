@@ -18,6 +18,18 @@ two ways: how far off black the canvas sits, and a cool blue-grey cast on the
 greys. Both keep Ember Black's own contrast ratios rather than eyeballed ones,
 so a lifted canvas costs no crispness.
 
+### Ember Black
+
+![Ember Black](./preview/black.png)
+
+### Ember Ink
+
+![Ember Ink](./preview/ink.png)
+
+### Ember Slate
+
+![Ember Slate](./preview/slate.png)
+
 ## Design
 
 - **True-black editor** (`#000000`) — designed for OLED displays

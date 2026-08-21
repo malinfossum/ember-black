@@ -25,16 +25,18 @@ function toLinear(channel: number): number {
 	return v <= SRGB_KNEE ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
 }
 
-/** Relative luminance of a `#rrggbb` colour, per WCAG 2.1. */
+/** Relative luminance of a `#rrggbb` color, per WCAG 2.1. */
 export function luminance(hex: string): number {
 	const match = HEX.exec(hex);
-	if (!match) throw new Error(`Not a hex colour: ${hex}`);
+	if (!match) throw new Error(`Not a hex color: ${hex}`);
 
-	const [r, g, b] = [0, 2, 4].map((i) => toLinear(Number.parseInt(match[1].slice(i, i + 2), 16)));
+	const [r, g, b] = [0, 2, 4].map((i) =>
+		toLinear(Number.parseInt(match[1].slice(i, i + 2), 16)),
+	);
 	return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
-/** Contrast ratio — 1:1 for identical colours, 21:1 for black on white. */
+/** Contrast ratio — 1:1 for identical colors, 21:1 for black on white. */
 export function contrast(a: string, b: string): number {
 	const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
 	return (hi + 0.05) / (lo + 0.05);
@@ -49,4 +51,6 @@ export function grey({ level, tint }: Variant, at = level): readonly number[] {
 const ink = VARIANTS[1];
 const ratio = contrast("#d1d4d6", "#151616");
 
-console.log(`${ink.label} — canvas ${grey(ink).join(", ")}, text ${ratio.toFixed(2)}:1`);
+console.log(
+	`${ink.label} — canvas ${grey(ink).join(", ")}, text ${ratio.toFixed(2)}:1`,
+);
