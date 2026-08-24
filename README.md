@@ -39,11 +39,23 @@ so a lifted canvas costs no crispness.
 
 ## Install
 
+Install from the
+[VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=malinfossum.ember-black),
+or from inside VS Code — open Quick Open (`Ctrl+P`) and run:
+
+```
+ext install malinfossum.ember-black
+```
+
+Then open the command palette (`Ctrl+Shift+P`) → **Preferences: Color Theme** →
+pick **Ember Black**, **Ember Ink**, or **Ember Slate**.
+
+### From a VSIX
+
 1. Download the latest `ember-black-<version>.vsix` from [Releases](https://github.com/malinfossum/ember-black/releases)
 2. In VS Code, open the Extensions view
 3. Click the `⋯` menu in the top-right → **Install from VSIX...**
 4. Select the downloaded file
-5. Open the command palette (`Ctrl+Shift+P`) → **Preferences: Color Theme** → pick **Ember Black**, **Ember Ink**, or **Ember Slate**
 
 ## Recommended setting
 
