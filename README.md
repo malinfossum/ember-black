@@ -2,7 +2,7 @@
 
 An OLED-first VS Code theme built on true black with warm, Claude-inspired accents.
 
-![Ember Black preview](./preview.png)
+![Ember Black — a Vue single-file component](./preview.png)
 
 ## Three themes
 
@@ -17,6 +17,8 @@ byte-for-byte identical across them. Ink and Slate differ from Black in exactly
 two ways: how far off black the canvas sits, and a cool blue-grey cast on the
 greys. Both keep Ember Black's own contrast ratios rather than eyeballed ones,
 so a lifted canvas costs no crispness.
+
+The same C# file in each:
 
 ### Ember Black
 
@@ -59,11 +61,40 @@ pick **Ember Black**, **Ember Ink**, or **Ember Slate**.
 
 ## Recommended setting
 
-Add this to your `settings.json` so the custom bracket colors apply:
+Add this to your `settings.json` so the theme's own bracket colors apply:
 
 ```json
 "editor.bracketPairColorization.enabled": false
 ```
+
+VS Code's built-in colorizer tints brackets by *nesting depth*. Ember Black
+colors them by *kind* instead — `()` orange, `{}` teal, `[]` gold — so the shape
+of a nested structure reads at a glance. Turning the built-in one off hands that
+job to the theme.
+
+Leave it on if you prefer depth colors. The theme styles those too, in
+`editorBracketHighlight.foreground1`–`6`.
+
+## Language coverage
+
+Tuned scope-by-scope for JavaScript, TypeScript, CSS/SCSS, Python, C#, Go, Rust,
+YAML, Shell, SQL, TOML, Dockerfile, Markdown, and diffs — plus the
+HTML-derivative single-file components: Vue, Svelte, Astro, JSX/TSX.
+
+![Ember Black on Python](./preview/python.png)
+
+Sample files for each of those live in `preview/`.
+
+Everything else falls back rather than falling through. The theme colors the root
+TextMate scopes — `punctuation`, `entity.name`, `entity.other`, `constant`,
+`storage`, `support` — and lets the specific rules override them, so a language
+the theme has never heard of still gets a full palette instead of plain white.
+Language servers land in the same place: VS Code resolves an unmapped semantic
+token through the extension's own scope map, which points back at those roots.
+
+The exception is a server that ships no scope map for a token type. Those are
+mapped by hand in `semanticTokenColors` — Pylance's brackets and modules, and
+the Roslyn C# set.
 
 ## Development
 

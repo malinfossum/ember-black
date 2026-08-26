@@ -635,10 +635,74 @@
 
 		"decorator": { "foreground": "#e07fa3", "italic": true },
 
+		"module": "#4aa3ee",
+		"intrinsic": "#3fc9a7",
+		"parenthesis": "#d97757",
+		"bracket": "#e6d260",
+		"curlybrace": "#3fc9a7",
+		"semicolon": "#6a6a6a",
+		"arrow": "#c77fe0",
+
+		"controlKeyword": "#c77fe0",
+		"field": "#8cc8f0",
+		"constant": "#7ecc4a",
+		"delegate": "#3fc9a7",
+		"recordClass": "#3fc9a7",
+		"recordStruct": "#3fc9a7",
+		"extensionMethod": "#e6d260",
+		"operatorOverloaded": "#e6d260",
+		"stringVerbatim": "#ea9a67",
+		"stringEscapeCharacter": "#c77fe0",
+
 		"*.deprecated": { "strikethrough": true },
 		"*.abstract": { "italic": true }
 	},
 	"tokenColors": [
+		{
+			"scope": ["punctuation"],
+			"settings": { "foreground": "#6a6a6a" }
+		},
+		{
+			"scope": [
+				"punctuation.definition.string",
+				"punctuation.definition.group.regexp",
+				"punctuation.definition.character-class.regexp"
+			],
+			"settings": { "foreground": "#ea9a67" }
+		},
+		{
+			"scope": ["entity.name", "support", "entity.other.inherited-class"],
+			"settings": { "foreground": "#3fc9a7" }
+		},
+		{
+			"scope": [
+				"entity.other",
+				"entity.name.variable",
+				"support.variable",
+				"support.other"
+			],
+			"settings": { "foreground": "#8cc8f0" }
+		},
+		{
+			"scope": [
+				"constant",
+				"support.constant",
+				"variable.other.constant",
+				"entity.name.constant"
+			],
+			"settings": { "foreground": "#7ecc4a" }
+		},
+		{
+			"scope": [
+				"storage",
+				"support.module",
+				"entity.name.namespace",
+				"entity.name.module",
+				"entity.name.package"
+			],
+			"settings": { "foreground": "#4aa3ee" }
+		},
+
 		{
 			"scope": [
 				"keyword.control",
@@ -1329,6 +1393,86 @@
 				"variable.other.key.toml"
 			],
 			"settings": { "foreground": "#8cc8f0" }
+		},
+
+		{
+			"scope": [
+				"punctuation.parenthesis.open",
+				"punctuation.parenthesis.close",
+				"punctuation.bracket.round",
+				"punctuation.definition.begin.bracket.round",
+				"punctuation.definition.end.bracket.round"
+			],
+			"settings": { "foreground": "#d97757" }
+		},
+		{
+			"scope": [
+				"punctuation.curlybrace.open",
+				"punctuation.curlybrace.close",
+				"punctuation.bracket.curly",
+				"punctuation.definition.begin.bracket.curly",
+				"punctuation.definition.end.bracket.curly",
+				"punctuation.section.class.begin.bracket.curly",
+				"punctuation.section.class.end.bracket.curly",
+				"punctuation.section.method.begin.bracket.curly",
+				"punctuation.section.method.end.bracket.curly",
+				"punctuation.section.array-initializer.begin.bracket.curly",
+				"punctuation.section.array-initializer.end.bracket.curly"
+			],
+			"settings": { "foreground": "#3fc9a7" }
+		},
+		{
+			"scope": [
+				"punctuation.squarebracket.open",
+				"punctuation.squarebracket.close",
+				"punctuation.bracket.square"
+			],
+			"settings": { "foreground": "#e6d260" }
+		},
+		{
+			"scope": [
+				"punctuation.definition.typeparameters.begin",
+				"punctuation.definition.typeparameters.end",
+				"punctuation.definition.generic.begin",
+				"punctuation.definition.generic.end",
+				"punctuation.bracket.angle"
+			],
+			"settings": { "foreground": "#3fc9a7" }
+		},
+		{
+			"scope": [
+				"punctuation.separator",
+				"punctuation.terminator",
+				"punctuation.dot"
+			],
+			"settings": { "foreground": "#6a6a6a" }
+		},
+		{
+			"scope": [
+				"punctuation.definition.interpolation",
+				"punctuation.definition.interpolation.begin",
+				"punctuation.definition.interpolation.end",
+				"punctuation.section.interpolation.begin",
+				"punctuation.section.interpolation.end"
+			],
+			"settings": { "foreground": "#c77fe0" }
+		},
+		{
+			"scope": [
+				"punctuation.attribute-shorthand.bind.html.vue",
+				"punctuation.attribute-shorthand.event.html.vue",
+				"punctuation.attribute-shorthand.slot.html.vue",
+				"punctuation.definition.keyword.svelte"
+			],
+			"settings": { "foreground": "#c77fe0" }
+		},
+		{
+			"scope": [
+				"punctuation.definition.variable.svelte",
+				"punctuation.definition.variable.php",
+				"punctuation.definition.entity.html"
+			],
+			"settings": { "foreground": "#4a4a4a" }
 		}
 	]
 }

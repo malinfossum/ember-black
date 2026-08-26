@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.6.0 — 2026-08-26
+
+- Fix `.vue`, `.svelte`, C#, Java, and PHP rendering as near-plain white text with `editor.bracketPairColorization.enabled` set to `false` — brackets and punctuation were only colored under the scope names JS/TS/CSS grammars use, so every other grammar fell through to `editor.foreground`
+- Add a fallback tier on the root TextMate scopes (`punctuation`, `entity.name`, `entity.other`, `constant`, `storage`, `support`) so a language the theme has never heard of gets the full palette instead of white; the specific rules still win
+- Map the bracket and punctuation names used by C#, Java, and PHP onto the existing families — `()` orange, `{}` teal, `[]` gold, generics `<>` teal
+- Add Vue template coverage — `{{ }}` interpolation and the `:prop` / `@click` / `#slot` shorthand — plus Svelte block punctuation and the PHP ` sigil
+- Add `semanticTokenColors` for language-server token types that ship no scope mapping: Pylance's `parenthesis`, `bracket`, `curlybrace`, `module`, and `intrinsic` (all previously white in Python), and the Roslyn C# set (`controlKeyword`, `field`, `constant`, `delegate`, `recordClass`, `recordStruct`, `extensionMethod`, `operatorOverloaded`, `stringVerbatim`, `stringEscapeCharacter`)
+- Color `variable.other.constant` green so TextMate agrees with the `variable.readonly` already in `semanticTokenColors`
+- Document what the recommended setting actually does, and add a **Language coverage** section to the README
+- Reshoot every screenshot: the hero is now a Vue single-file component, the three variant shots are C#, and a Python shot is added to the README
+- Add preview samples for C#, Vue, Python, and Markdown (`preview/sample.cs`, `sample.vue`, `VariantCard.vue`, `sample.py`, `sample.md`)
+
 ## 1.5.0 — 2026-08-21
 
 - Add **Ember Ink** (`#151616`) and **Ember Slate** (`#1c1d1e`), two cool dark siblings for when true black is too stark for a long session — same syntax palette, canvas lifted off black with a blue-grey cast on the greys
