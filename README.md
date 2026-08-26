@@ -18,6 +18,11 @@ two ways: how far off black the canvas sits, and a cool blue-grey cast on the
 greys. Both keep Ember Black's own contrast ratios rather than eyeballed ones,
 so a lifted canvas costs no crispness.
 
+**OLED-first, not OLED-only.** True black was designed for panels that switch
+pixels off, but it holds up on LED-backlit LCDs too — the palette's contrast
+ratios are the same either way. If it reads too stark on yours, Ink and Slate
+are the same syntax colors on a lifted canvas.
+
 The same C# file in each:
 
 ### Ember Black
