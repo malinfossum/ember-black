@@ -2,7 +2,7 @@
 	"name": "ember-black",
 	"displayName": "Ember Black",
 	"description": "OLED-first VS Code theme with Claude-inspired warm accents and a saturated syntax palette. Ships in true black plus two cooler dark siblings.",
-	"version": "1.6.0",
+	"version": "1.6.1",
 	"publisher": "malinfossum",
 	"license": "MIT",
 	"author": {

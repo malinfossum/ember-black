@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1 — 2026-08-26
+
+- Document that the true-black canvas holds up on LED-backlit LCD panels, not only OLED — the palette's contrast ratios are the same either way (thanks to Rune for the report)
+
 ## 1.6.0 — 2026-08-26
 
 - Fix `.vue`, `.svelte`, C#, Java, and PHP rendering as near-plain white text with `editor.bracketPairColorization.enabled` set to `false` — brackets and punctuation were only colored under the scope names JS/TS/CSS grammars use, so every other grammar fell through to `editor.foreground`
